@@ -1,20 +1,23 @@
+import { globalRenderer } from "..";
 import { gravity } from "../constants"
+import type { Sprite } from "./Sprite";
 
 export class Entity {
     protected rectangle: Rect;
     protected velocity: Velocity
     private color: string = "red";
     private ctx: CanvasRenderingContext2D;
-    private sprite?: HTMLImageElement;
+    private sprite: Sprite;
 
-    constructor(ctx: CanvasRenderingContext2D, rect: Rect, color: string, vel: Velocity) {
+    constructor(ctx: CanvasRenderingContext2D, rect: Rect, color: string, vel: Velocity, sprite: Sprite) {
         this.rectangle = rect;
         this.ctx = ctx;
         this.color = color;
         this.velocity = vel;
+        this.sprite = sprite;
     }
 
-    public setSprite(spr: HTMLImageElement) {
+    public setSprite(spr: Sprite) {
         this.sprite = spr;
     }
 
@@ -43,13 +46,14 @@ export class Entity {
     }
 
     public draw() {
-        this.ctx.fillStyle = this.color;
-        this.ctx.fillRect(
-            this.rectangle.x,
-            this.rectangle.y,
-            this.rectangle.w,
-            this.rectangle.h,
-        )
+        // this.ctx.fillStyle = this.color;
+        // this.ctx.fillRect(
+        //     this.rectangle.x,
+        //     this.rectangle.y,
+        //     this.rectangle.w,
+        //     this.rectangle.h,
+        // )
+        this.sprite.draw(globalRenderer.ctx);
     }
 
     public update() {

@@ -1,22 +1,30 @@
-import { gravity } from "../constants";
 import { Entity } from "./Entity";
+import type { Sprite } from "./Sprite";
 
 // Physic instance, can move this with kbd, can only be created once per game
 
 
 export class Player extends Entity {
-    constructor(ctx: CanvasRenderingContext2D, rect: Rect, color: string) {
-        super(ctx, rect, color, { xvel: 0, yvel: 0 });
+    // private sprites = {
+    //     idle: {
+    //         left: "assets/sprites/player/idle/left.png",
+    //         right: "assets/sprites/player/idle/right.png",
+    //     }
+    // }
+
+    constructor(ctx: CanvasRenderingContext2D, rect: Rect, color: string, sprite: Sprite) {
+        super(ctx, rect, color, { xvel: 0, yvel: 0 }, sprite);
     }
 
     private keys = {
         d: { pressed: false },
         a: { pressed: false },
+        space: { pressed: false }
     }
 
+    public allowDoubleJump = true;
     public updatePosition(canv: HTMLCanvasElement) {
         this.update();
-
         this.velocity.xvel = 0;
 
         if (this.keys.a.pressed) {
@@ -41,6 +49,11 @@ export class Player extends Entity {
                     this.keys.a.pressed = true;
                     break;
                 case " ": // space
+                    if (this.keys.space.pressed) {
+                        break;
+                    }
+
+                    this.keys.space.pressed = true;
                     this.velocity.yvel = -5;
                     break;
             }
@@ -53,6 +66,9 @@ export class Player extends Entity {
                     break;
                 case "a":
                     this.keys.a.pressed = false;
+                    break;
+                case " ":
+                    this.keys.space.pressed = false;
                     break;
             }
         })

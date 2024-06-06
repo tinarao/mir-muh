@@ -12,6 +12,7 @@ export class Sprite {
 
     public draw(canv: CanvasRenderingContext2D) {
         if (!this.image) return alert("No image!")
+        console.log(this.image);
         canv.drawImage(this.image, this.x, this.y, 1920, 1080);
     }
 }
