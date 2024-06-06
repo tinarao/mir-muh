@@ -1,8 +1,8 @@
 import { gravity } from "../constants"
 
 export class Entity {
-    private rectangle: Rect;
-    private velocity: Velocity
+    protected rectangle: Rect;
+    protected velocity: Velocity
     private color: string = "red";
     private ctx: CanvasRenderingContext2D;
     private sprite?: HTMLImageElement;
@@ -54,6 +54,9 @@ export class Entity {
 
     public update() {
         // TODO: delete; wrote this for debug purposes
+        this.rectangle.x += this.velocity.xvel;
+        this.rectangle.y += this.velocity.yvel;
+
         this.draw();
     }
 }

@@ -2,51 +2,36 @@
 import { Entity } from "./classes/Entity";
 import { Player } from "./classes/Player";
 import { Renderer } from "./classes/Renderer";
+import { Sprite } from "./classes/Sprite";
 import { Canvas } from "./classes/Window";
+import { loop } from "./loop";
 
 let player: Player;
-
-const gameLoop = () => {
-    document.addEventListener("keydown", (e) => {
-        const key = e.key;
-        console.log(key);
-
-        switch (key) {
-            case "w":
-                player.move("up");
-                break;
-            case "s":
-                player.move("down");
-                break;
-        }
-    })
-}
+let bg: Sprite;
 
 const update = (renderer: Renderer, canv: HTMLCanvasElement) => {
-    const render = (): void => {
-        window.requestAnimationFrame(render);
+    loop(() => {
         renderer.clearScreen(canv);
-        // >> loop starts here <<
+        bg.draw(renderer.ctx);
+        player.updatePosition(canv);
 
-        gameLoop();
-        player.update();
-
-        // loop ends here
-    }
-
-    render();
+    })
 }
 
 const main = () => {
     // init
-    const canvas = new Canvas(1920, 1080);
+    const canvas = new Canvas(1200, 600);
     const renderer = new Renderer(canvas.canv);
     const ctx = renderer.ctx;
 
     // create instances
-    // player = new Entity(ctx, { x: 100, y: 100, w: 100, h: 100 }, "red", { xvel: 0, yvel: 0.5 });
-    player = new Player(ctx, { x: 100, y: 100, w: 100, h: 100 }, "red", { xvel: 0, yvel: 0.5 }, 0.1);
-    // update the screen
+    player = new Player(
+        ctx,
+        { x: 100, y: 100, w: 75, h: 75 },
+        "red");
+
+    bg = new Sprite(0, 0, "https://i.pinimg.com/originals/7c/93/a3/7c93a3299b7645f70e1f364174c43ccf.jpg");
+
     update(renderer, canvas.canv);
 }
 

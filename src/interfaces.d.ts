@@ -10,4 +10,5 @@ interface Velocity {
     yvel: number
 }
 
+
 type Directions = "up" | "down" | "left" | "right"
