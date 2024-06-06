@@ -1,0 +1,15 @@
+{
+  "name": "platformer",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "html": "parcel src/index.html"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "parcel": "^2.12.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
