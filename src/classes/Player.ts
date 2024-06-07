@@ -1,19 +1,16 @@
+import { gRenderer } from "..";
 import { Entity } from "./Entity";
-import type { Sprite } from "./Sprite";
-
-// Physic instance, can move this with kbd, can only be created once per game
-
 
 export class Player extends Entity {
-    // private sprites = {
-    //     idle: {
-    //         left: "assets/sprites/player/idle/left.png",
-    //         right: "assets/sprites/player/idle/right.png",
-    //     }
-    // }
+    constructor(rect: Rect, filepath: string) {
+        super(rect, filepath);
+    }
 
-    constructor(ctx: CanvasRenderingContext2D, rect: Rect, color: string, sprite: Sprite) {
-        super(ctx, rect, color, { xvel: 0, yvel: 0 }, sprite);
+    private spriteSet = {
+        idle: {
+            left: "https://ibb.org.ru/images/2024/06/07/left.png",
+            right: "https://ibb.org.ru/images/2024/06/07/right.png"
+        }
     }
 
     private keys = {
@@ -22,9 +19,10 @@ export class Player extends Entity {
         space: { pressed: false }
     }
 
-    public allowDoubleJump = true;
-    public updatePosition(canv: HTMLCanvasElement) {
+    public allowDoubleJump = false;
+    public updatePosition() {
         this.update();
+
         this.velocity.xvel = 0;
 
         if (this.keys.a.pressed) {
@@ -34,7 +32,7 @@ export class Player extends Entity {
         }
 
         // gravity
-        if (this.rectangle.y + this.rectangle.h + this.velocity.yvel < canv.height) {
+        if (this.rectangle.y + this.rectangle.h + this.velocity.yvel < gRenderer.canv.height) {
             this.velocity.yvel += 0.1;
         } else {
             this.velocity.yvel = 0;
@@ -43,9 +41,11 @@ export class Player extends Entity {
         window.addEventListener("keydown", e => {
             switch (e.key) {
                 case "d":
+                    this.sprite.src = this.spriteSet.idle.right;
                     this.keys.d.pressed = true;
                     break;
                 case "a":
+                    this.sprite.src = this.spriteSet.idle.left;
                     this.keys.a.pressed = true;
                     break;
                 case " ": // space

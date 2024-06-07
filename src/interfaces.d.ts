@@ -10,5 +10,12 @@ interface Velocity {
     yvel: number
 }
 
+interface Pos {
+    x: number,
+    y: number,
+    w: number,
+    h: number
+}
+
 
 type Directions = "up" | "down" | "left" | "right"

@@ -1,24 +1,40 @@
-import { globalRenderer } from "..";
-import { gravity } from "../constants"
-import type { Sprite } from "./Sprite";
+import { gRenderer } from "..";
 
 export class Entity {
     protected rectangle: Rect;
-    protected velocity: Velocity
-    private color: string = "red";
-    private ctx: CanvasRenderingContext2D;
-    private sprite: Sprite;
+    protected velocity: Velocity = { xvel: 0, yvel: 0 };
+    protected sprite: HTMLImageElement;
 
-    constructor(ctx: CanvasRenderingContext2D, rect: Rect, color: string, vel: Velocity, sprite: Sprite) {
+    public lives: number = 5;
+
+    constructor(rect: Rect, filepath: string) {
         this.rectangle = rect;
-        this.ctx = ctx;
-        this.color = color;
-        this.velocity = vel;
-        this.sprite = sprite;
+
+        this.sprite = new Image();
+        this.sprite.onload = () => {
+            this.sprite.width = this.rectangle.w;
+            this.sprite.height = this.rectangle.h;
+        }
+        this.sprite.src = filepath;
     }
 
-    public setSprite(spr: Sprite) {
-        this.sprite = spr;
+    public draw() {
+        gRenderer.ctx.drawImage(this.sprite, this.rectangle.x, this.rectangle.y);
+    }
+
+    public recieveDamage(dmg: number) {
+        this.lives = this.lives - dmg;
+    }
+
+    public update() {
+        this.rectangle.x += this.velocity.xvel;
+        this.rectangle.y += this.velocity.yvel;
+
+        if (this.lives <= 0) {
+            alert("Ты проиграл!")
+        }
+
+        this.draw();
     }
 
     public getX() {
@@ -27,40 +43,5 @@ export class Entity {
 
     public getY() {
         return this.rectangle.y;
-    }
-
-    public getW() {
-        return this.rectangle.w;
-    }
-
-    public getH() {
-        return this.rectangle.h;
-    }
-
-    public setX(x: number) {
-        this.rectangle.x = x;
-    }
-
-    public setY(y: number) {
-        this.rectangle.y = y;
-    }
-
-    public draw() {
-        // this.ctx.fillStyle = this.color;
-        // this.ctx.fillRect(
-        //     this.rectangle.x,
-        //     this.rectangle.y,
-        //     this.rectangle.w,
-        //     this.rectangle.h,
-        // )
-        this.sprite.draw(globalRenderer.ctx);
-    }
-
-    public update() {
-        // TODO: delete; wrote this for debug purposes
-        this.rectangle.x += this.velocity.xvel;
-        this.rectangle.y += this.velocity.yvel;
-
-        this.draw();
     }
 }
