@@ -19,3 +19,4 @@ interface Pos {
 
 
 type Directions = "up" | "down" | "left" | "right"
+type FacingDirections = "left" | "right"

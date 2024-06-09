@@ -48,7 +48,7 @@ export class Enemy extends Entity {
 
             setTimeout(() => {
                 this.isAttacked = false;
-            }, 5000)
+            }, 1000)
         }
 
     }

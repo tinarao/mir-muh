@@ -16,12 +16,23 @@ export class Player extends Entity {
     private keys = {
         d: { pressed: false },
         a: { pressed: false },
-        space: { pressed: false }
+        space: { pressed: false },
+        enter: { pressed: false },
     }
+
+    private facing: FacingDirections = "right";
 
     public allowDoubleJump = false;
     public updatePosition() {
         this.update();
+        switch (this.facing) {
+            case "left":
+                this.sprite.src = this.spriteSet.idle.left;
+                break;
+            case "right":
+                this.sprite.src = this.spriteSet.idle.right;
+                break;
+        }
 
         this.velocity.xvel = 0;
 
@@ -41,20 +52,23 @@ export class Player extends Entity {
         window.addEventListener("keydown", e => {
             switch (e.key) {
                 case "d":
-                    this.sprite.src = this.spriteSet.idle.right;
                     this.keys.d.pressed = true;
+                    this.facing = "right";
                     break;
                 case "a":
-                    this.sprite.src = this.spriteSet.idle.left;
                     this.keys.a.pressed = true;
+                    this.facing = "left";
                     break;
                 case " ": // space
                     if (this.keys.space.pressed) {
                         break;
                     }
-
                     this.keys.space.pressed = true;
                     this.velocity.yvel = -5;
+                    break;
+                case "Enter":
+                    this.keys.enter.pressed = true;
+                    console.log("Shoot!");
                     break;
             }
         })
@@ -69,6 +83,9 @@ export class Player extends Entity {
                     break;
                 case " ":
                     this.keys.space.pressed = false;
+                    break;
+                case "Enter":
+                    this.keys.enter.pressed = false;
                     break;
             }
         })
